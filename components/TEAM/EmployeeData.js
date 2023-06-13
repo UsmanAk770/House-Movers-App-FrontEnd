@@ -6,19 +6,45 @@ import {
   TouchableOpacity, 
   StyleSheet, 
   ScrollView, 
-  KeyboardAvoidingView,
-  TouchableHighlight,
-  ToastAndroid 
+  KeyboardAvoidingView
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Avatar, Button } from 'react-native-paper'
+
+//test
+
 const EmployeeData = (navigation) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [cnic, setCnic] = useState('');
   const [roll, setroll] = useState('');
-  const [image, setImage] = useState(null);
   const [employeeList, setEmployeeList] = useState([]);
+
+  fetch('http://127.0.0.1:3000/viewteam', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      const driverList = data.Driver.map((driver) => ({
+        id: driver._id,
+        roll: driver.D_roll,
+        name: driver.D_name,
+        phone: driver.D_phone,
+        cnic: driver.D_cnic,
+      }));
+
+      const labourList = data.labour.map((labour) => ({
+        id: labour._id,
+        roll: labour.L_roll,
+        name: labour.L_name,
+        phone: labour.L_phone,
+        cnic: labour.L_cnic,
+      }));
+
+      const newTeaList = [...driverList, ...labourList];
+      setEmployeeList(newTeaList);
+    });
 
   const handleNameChange = (value) => {
     setName(value);
@@ -35,115 +61,243 @@ const EmployeeData = (navigation) => {
     setroll(value);
   };
 
-  const handleImageChange = (value) => {
-    setImage(value);
-  };
-  const [galleryPermission, setGalleryPermission] = useState(null);
-    const [imageUri, setImageUri] = useState(null);
   
-    const setToastMsg = msg => {
-        //ToastAndroid.showWithGravity(msg, ToastAndroid.SHORT, ToastAndroid.CENTER);
-    }
-
-    const permisionFunction = async () => {
-
-        const imagePermission = await ImagePicker.getMediaLibraryPermissionsAsync();
-        console.log(imagePermission.status);
-
-        setGalleryPermission(imagePermission.status === 'granted');
-
-        if (imagePermission.status !== 'granted') {
-            setToastMsg('Permission for media access needed.');
-        }
-    }
-    useEffect(() => {
-        permisionFunction();
-    }, []);
-
-    const pick = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            setImageUri(result.imageUri);
-        }
-    }
-
-    const removeImage = () => {
-        setImageUri('');
-        setToastMsg('Image Removed');
-    }
+    
   const handleAddEmployee = () => {
-  if(image === ''|| name === '' || phone === '' || (phone.length < 11) || (phone.length > 13) ||cnic === '' || ((cnic.length < 13) || (cnic.length > 13))) {
+  if(name === '' || phone === '' || (phone.length < 11) || (phone.length > 13) ||cnic === '' || ((cnic.length < 13) || (cnic.length > 13) || roll === '')) {
+      console.log(name, phone, cnic, roll);
       alert('Please Fill All the Fields Correctly');
     } else {
-      const newEmployee = {
-        id: employeeList.length + 1,
-        name: name,
-        phone: phone,
-        cnic: cnic,
-        roll: roll,
-        image: imageUri
-      };
-      setEmployeeList([...employeeList, newEmployee]);
+      if (roll === 'driver' || roll === 'Driver') {
+          const fdata = {
+            roll: roll,
+            Driver_name: name,
+            Driver_phone: phone,
+            Driver_cnic: cnic,
+          };
+          console.log(fdata);
+          fetch('http://127.0.0.1:3000/addteam', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(fdata),
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.error) {
+                console.log(data.error);
+              } else {
+                console.log(data);
+                fetch('http://127.0.0.1:3000/viewteam', {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    const driverList = data.Driver.map(driver => ({
+                      id: driver._id,
+                      roll: driver.D_roll,
+                      name: driver.D_name,
+                      phone: driver.D_phone,
+                      cnic: driver.D_cnic,
+                    }));
+    
+                    const labourList = data.labour.map(labour => ({
+                      id: labour._id,
+                      roll: labour.L_roll,
+                      name: labour.L_name,
+                      phone: labour.L_phone,
+                      cnic: labour.L_cnic,
+                    }));
+    
+                    const newTeaList = [...driverList, ...labourList];
+                    setEmployeeList(newTeaList);
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        } else if (roll === 'labour' || roll === 'Labour') {
+          const fdata = {
+            roll: roll,
+            labour_name: name,
+            labour_phone: phone,
+            labour_cnic: cnic,
+          };
+          console.log(fdata);
+          fetch('http://127.0.0.1:3000/addteam', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(fdata),
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.error) {
+                console.log(data.error);
+              } else {
+                console.log(data);
+                fetch('http://127.0.0.1:3000/viewteam', {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    const driverList = data.Driver.map(driver => ({
+                      id: driver._id,
+                      roll: driver.D_roll,
+                      name: driver.D_name,
+                      phone: driver.D_phone,
+                      cnic: driver.D_cnic,
+                    }));
+    
+                    const labourList = data.labour.map(labour => ({
+                      id: labour._id,
+                      roll: labour.L_roll,
+                      name: labour.L_name,
+                      phone: labour.L_phone,
+                      cnic: labour.L_cnic,
+                    }));
+    
+                    const newTeaList = [...driverList, ...labourList];
+                    setEmployeeList(newTeaList);
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        }
       setName('');
       setPhone('');
       setCnic('');
       setroll('');
-      setImage(null);
-      //setImageUri('');
       alert('Employee Details Added Successfully');
     }
   };
 
-  const handleEditEmployee = (id) => {
-    const employee = employeeList.find(emp => emp.id === id);
-    setName(employee.name);
-    setPhone(employee.phone);
-    setCnic(employee.cnic);
-    setroll(employee.roll);    
-    setImage(employee.image);
-    setEmployeeList(employeeList.filter(emp => emp.id !== id));
-  };
 
-  const handleDeleteEmployee = (id) => {
-    setEmployeeList(employeeList.filter(emp => emp.id !== id));
+  const handleDeleteEmployee = (employee) => {
+    if(employee.roll == 'driver' || employee.roll == 'Driver') {
+      const sdata =
+      {
+        roll: employee.roll,
+        Driver_cnic: employee.cnic
+      }
+      fetch(`http://127.0.0.1:3000/deleteteam`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(sdata)
+      })
+      .then(response => response.json())
+      .then(() => {
+          fetch('http://127.0.0.1:3000/viewteam', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              const driverList = data.Driver.map(driver => ({
+                id: driver._id,
+                roll: driver.D_roll,
+                name: driver.D_name,
+                phone: driver.D_phone,
+                cnic: driver.D_cnic,
+              }));
+  
+              const labourList = data.labour.map(labour => ({
+                id: labour._id,
+                roll: labour.L_roll,
+                name: labour.L_name,
+                phone: labour.L_phone,
+                cnic: labour.L_cnic,
+              }));
+  
+              const newTeaList = [...driverList, ...labourList];
+              setEmployeeList(newTeaList);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        })
+        .catch(error => {
+          console.error('Error deleting vehicle:', error);
+        });
+    }else if(employee.roll == 'labour' || employee.roll == 'Labour') {
+      const sdata =
+      {
+        roll: employee.roll,
+        labour_cnic: employee.cnic
+      }
+      fetch(`http://127.0.0.1:3000/deleteteam`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(sdata)
+      })
+        .then(() => {
+          fetch('http://127.0.0.1:3000/viewteam', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => response.json())
+            .then(data => {
+              const driverList = data.Driver.map(driver => ({
+                id: driver._id,
+                roll: driver.D_roll,
+                name: driver.D_name,
+                phone: driver.D_phone,
+                cnic: driver.D_cnic,
+              }));
+  
+              const labourList = data.labour.map(labour => ({
+                id: labour._id,
+                roll: labour.L_roll,
+                name: labour.L_name,
+                phone: labour.L_phone,
+                cnic: labour.L_cnic,
+              }));
+  
+              const newTeaList = [...driverList, ...labourList];
+              setEmployeeList(newTeaList);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        })
+        .catch(error => {
+          console.error('Error deleting vehicle:', error);
+        });
+
+    }  
+    console.log(employee);
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.formContainer}>
           <Text style={styles.heading}>Add Employee</Text>
-          <View style={styles.innerContainer}>
-                <TouchableHighlight
-                    onPress={pick}
-                    underlayColor='rgba(0,0,0,0)'
-                    onChangeText={handleImageChange}
-                >
-                    <Avatar.Image
-                        size={95}
-                        source={{ uri: imageUri }}
-                    />
-                </TouchableHighlight>
-            </View>
-            <View style={[styles.innerContainer, { marginTop: 5, flexDirection: 'row' }]}>
-                <Button
-                    mode='contained'
-                    onPress={pick}
-                    style = {{backgroundColor: '#Bf9000',borderColor: '#000000',borderWidth: 1,marginBottom:10}}
-                >
-                    Upload Image
-                </Button>
-                <Button
-                    mode='contained'
-                    onPress={() => removeImage()}
-                    style = {{backgroundColor: '#Bf9000',borderColor: '#000000',borderWidth: 1,marginBottom:10}}
-                >
-                    Remove Image
-                </Button>
-            </View>
+            
           <TextInput
             style={styles.input}
             placeholder="Name"
@@ -183,20 +337,12 @@ const EmployeeData = (navigation) => {
           <Text style={styles.heading}>Employee List</Text>
           {employeeList.map(employee => (
               <View style={styles.employeeCard} key={employee.id}>
-              <Avatar.Image
-                        size={75}
-                        source={{ uri: imageUri }}
-                        style = {styles.employeeImage}
-              />
               <Text style={styles.employeeName}>Name : {employee.name}</Text>
               <Text style={styles.employeePhone}>Phone# : {employee.phone}</Text>
               <Text style={styles.employeeCnic}>CNIC : {employee.cnic}</Text>
               <Text style={styles.employeeroll}>Roll : {employee.roll}</Text>
               <View style= {{flexDirection:'row'}}>
-              <TouchableOpacity style={styles.editButton} onPress={() => handleEditEmployee(employee.id)}>
-                <Text style={styles.buttonText}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEmployee(employee.id)}>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEmployee(employee)}>
                 <Text style={styles.buttonText}>Delete</Text>
               </TouchableOpacity>
               </View>
