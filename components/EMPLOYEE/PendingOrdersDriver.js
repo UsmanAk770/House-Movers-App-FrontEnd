@@ -12,13 +12,13 @@ const PendingOrdersScreen = () => {
       to: '456 Elm St',
       status: 'Pending',
     },
-    {
-      id: '5678',
-      customerName: 'Jane Smith',
-      from: '789 Oak St',
-      to: '321 Pine St',
-      status: 'Pending',
-    },
+    // {
+    //   id: '5678',
+    //   customerName: 'Jane Smith',
+    //   from: '789 Oak St',
+    //   to: '321 Pine St',
+    //   status: 'Pending',
+    // },
     // Add more orders as needed
   ];
   const makePhoneCall = () => {
@@ -58,7 +58,7 @@ const navigation = useNavigation();
                 <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} 
                       onPress={() => {navigation.navigate('Tracking');}}>
                   <Text style={[styles.buttonText, { color: 'black' }]}>
-                    Track Order
+                    View Location 
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}

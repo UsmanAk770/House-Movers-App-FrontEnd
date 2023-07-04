@@ -12,28 +12,15 @@ const PendingOrdersScreen = () => {
       to: '456 Elm St',
       status: 'Pending',
     },
-    {
-      id: '5678',
-      customerName: 'Jane Smith',
-      from: '789 Oak St',
-      to: '321 Pine St',
-      status: 'Pending',
-    },
+    // {
+    //   id: '5678',
+    //   customerName: 'Jane Smith',
+    //   from: '789 Oak St',
+    //   to: '321 Pine St',
+    //   status: 'Pending',
+    // },
     // Add more orders as needed
   ];
-  const makePhoneCall = () => {
-  const phoneNumber = '1234567890'; // Replace with the desired phone number
-
-  // Check if the Linking API is supported on the device
-  Linking.canOpenURL(`tel:${phoneNumber}`).then((supported) => {
-    if (supported) {
-      // Open the phone dialer with the specified phone number
-      Linking.openURL(`tel:${phoneNumber}`);
-    } else {
-      console.log('Phone call not available');
-    }
-  });
-};
 const navigation = useNavigation();
   return (
      
@@ -65,12 +52,6 @@ const navigation = useNavigation();
                       onPress={() => {navigation.navigate('Details');}}>
                   <Text style={[styles.buttonText, { color: 'black' }]}>
                     View Order Details
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
-                      onPress={() => {makePhoneCall}}>
-                  <Text style={[styles.buttonText, { color: 'black' }]}>
-                    Contact Customer
                   </Text>
                 </TouchableOpacity>
               </View>

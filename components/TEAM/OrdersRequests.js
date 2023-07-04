@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ScrollView, Text,TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Linking } from 'react-native';
 
 const OrdersRequestComponent = () => {
   const orders = [
@@ -19,7 +20,19 @@ const OrdersRequestComponent = () => {
     // Add more orders as needed
   ];
 const navigation = useNavigation();
+const makePhoneCall = () => {
+  const phoneNumber = '1234567890'; // Replace with the desired phone number
 
+  // Check if the Linking API is supported on the device
+  Linking.canOpenURL(`tel:${phoneNumber}`).then((supported) => {
+    if (supported) {
+      // Open the phone dialer with the specified phone number
+      Linking.openURL(`tel:${phoneNumber}`);
+    } else {
+      console.log('Phone call not available');
+    }
+  });
+};
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -47,7 +60,7 @@ const navigation = useNavigation();
               <TouchableOpacity style={styles.button}  onPress={() => {navigation.navigate('Details');}}>
                 <Text style={styles.buttonText}>View Order Details</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Chats');}}>
+              <TouchableOpacity style={styles.button} onPress={() => {makePhoneCall}}>
                 <Text style={styles.buttonText}>Contact Customer</Text>
               </TouchableOpacity>
             </View>

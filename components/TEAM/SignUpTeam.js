@@ -48,34 +48,34 @@ const SignUpTeam = ({navigation}) => {
     
     // console.log(name,email, cnic, number, password, cnfrmpassword, error);
 
-    const fdata = {
-      Company_Name:name ,
-      Leader_Name: name,
-      Leader_Email: email,
-      Leader_CNIC: cnic,
-      Password: password
-    };
+    // const fdata = {
+    //   Company_Name:name ,
+    //   Leader_Name: name,
+    //   Leader_Email: email,
+    //   Leader_CNIC: cnic,
+    //   Password: password
+    // };
     //Company_Name,Leader_Name,Leader_Email,Leader_CNIC,Password
-    console.log(fdata);
-    fetch('http://127.0.0.1:3000/signupteam',{
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(fdata),
-    })
-    .then(response => response.json()).then(
-      data=> {
-        if(data.error) {
-          setError(data.error);
-        }
-        else{
-          alert('account created successfully');
-          navigation.replace('Team Sign In');
-        }
-        console.log(data);
-      }
-    )
+    // console.log(fdata);
+    // fetch('http://127.0.0.1:3000/signupteam',{
+    //   method: 'POST',
+    //   headers: {
+    //     'content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(fdata),
+    // })
+    // .then(response => response.json()).then(
+    //   data=> {
+    //     if(data.error) {
+    //       setError(data.error);
+    //     }
+    //     else{
+    //       alert('account created successfully');
+    //       navigation.replace('Team Sign In');
+    //     }
+    //     console.log(data);
+    //   }
+    // )
   };
   return (
       <KeyboardAvoidingView

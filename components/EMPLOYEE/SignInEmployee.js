@@ -13,7 +13,7 @@ const SignInEmployee = ({navigation}) => {
       setShowErrorMessage(true);
     } else {
       setShowErrorMessage(false);
-
+      navigation.replace('Employee Drawer');
       // Perform sign-in logic here
 
     }

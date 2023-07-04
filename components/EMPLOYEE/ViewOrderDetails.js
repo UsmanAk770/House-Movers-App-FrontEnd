@@ -1,20 +1,16 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  KeyboardAvoidingView,
-  StyleSheet,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import * as React from 'react';
+import { useState } from 'react';
+import { TouchableOpacity,KeyboardAvoidingView,ScrollView, Text, View, StyleSheet, Image, Pressable, TextInput} from 'react-native';
 import { IconButton } from 'react-native-paper';
-const ViewOrdersDetails = () => {
-  // Dummy data for testing
+
+import { useNavigation } from '@react-navigation/native';
+
+const LabourOrderDetails = () => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
     navigation.goBack();
-  }; 
+  };
 
   navigation.setOptions({
     headerLeft: () => (
@@ -29,7 +25,8 @@ const ViewOrdersDetails = () => {
       <Text style={styles.titleText}>Go Back</Text>
     </TouchableOpacity>
   ),
-});   
+});  
+
   const order = {
     customer: {
       name: 'John Doe',
@@ -56,10 +53,8 @@ const ViewOrdersDetails = () => {
     orderStatus: 'Pending',
   };
 
-  //const navigation = useNavigation();
-
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+   <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Customer Details</Text>
@@ -151,6 +146,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'coloumn',
     alignItems: 'center',
+    justifyContent:'center',
     marginLeft: 10,
     marginBottom: 5,
   },
@@ -161,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ViewOrdersDetails;
+export default LabourOrderDetails;
