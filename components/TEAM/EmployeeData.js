@@ -9,7 +9,6 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-//test
 
 const EmployeeData = (navigation) => {
   const [name, setName] = useState('');
@@ -335,19 +334,19 @@ const EmployeeData = (navigation) => {
         </View>
         <View style={styles.employeeListContainer}>
           <Text style={styles.heading}>Employee List</Text>
-          {employeeList.map(employee => (
-              <View style={styles.employeeCard} key={employee.id}>
-              <Text style={styles.employeeName}>Name : {employee.name}</Text>
-              <Text style={styles.employeePhone}>Phone# : {employee.phone}</Text>
-              <Text style={styles.employeeCnic}>CNIC : {employee.cnic}</Text>
-              <Text style={styles.employeeroll}>Roll : {employee.roll}</Text>
-              <View style= {{flexDirection:'row'}}>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEmployee(employee)}>
-                <Text style={styles.buttonText}>Delete</Text>
-              </TouchableOpacity>
+          {employeeList.map((employee, index) => (
+            <View style={styles.employeeCard} key={index}>
+              <Text style={styles.employeeName}>Name: {employee.name}</Text>
+              <Text style={styles.employeePhone}>Phone#: {employee.phone}</Text>
+              <Text style={styles.employeeCnic}>CNIC: {employee.cnic}</Text>
+              <Text style={styles.employeeroll}>Roll: {employee.roll}</Text>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEmployee(employee)}>
+                  <Text style={styles.buttonText}>Delete</Text>
+                </TouchableOpacity>
               </View>
-        </View>
-      ))}
+            </View>
+          ))}
     </View>
   </ScrollView>
 </KeyboardAvoidingView>

@@ -1,67 +1,88 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text,TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const PendingOrdersScreen = () => {
-  const orders = [
-    {
-      id: '1234',
-      customerName: 'John Doe',
-      from: '123 Main St',
-      to: '456 Elm St',
-      status: 'Pending',
-    },
-    {
-      id: '5678',
-      customerName: 'Jane Smith',
-      from: '789 Oak St',
-      to: '321 Pine St',
-      status: 'Pending',
-    },
-    // Add more orders as needed
-  ];
-const navigation = useNavigation();
+  const [orders, setOrders] = useState([]);
+  const navigation = useNavigation();
+  useEffect(() => {
+    fetch('http://127.0.0.1:3000/viewpendingorders', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const orderslist = data.map((order) => ({
+          id: order._id,
+          userName: order.orderDetails.userDetails && order.orderDetails.userDetails.name ? order.orderDetails.userDetails.name : 'N/A',
+          fromAddress: order.orderDetails.fromLocations,
+          toAddress: order.orderDetails.toLocations,
+          fareAmount: order.orderDetails.setfair,
+          orderStatus: order.status,
+        }));
+
+        setOrders(orderslist);
+      })
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+      });
+  }, []);
+
+
+
   return (
      
     <View style={styles.container}>
       <View style={styles.rectangleContainer}>
         <ScrollView contentContainerStyle={styles.ordersContainer}>
-          {orders.map((order, index) => (
-            <View style={styles.orderContainer} key={index}>
-              <Text style={styles.customerName}>{order.customerName}</Text>
-              <View style={styles.detailsContainer}>
-                <View style={[styles.dot, { backgroundColor: 'green' }]} />
-                <Text style={styles.addressText}>From : <Text style={styles.addressTextFrom}>{order.from}</Text></Text>
-              </View>
-              <View style={styles.detailsContainer}>
-                <View style={[styles.dot, { backgroundColor: 'red' }]} />
-                <Text style={styles.addressText}>To: <Text style={styles.addressTextTo}>{order.from}</Text></Text>
-              </View>
-              <Text style={[styles.orderIdText, { color: 'white' }]}>Order ID: <Text style={{ color: '#0000FF' }}>{order.id}</Text></Text>
-              <Text style={[styles.orderIdText, { color: 'white' }]}>Order Status: <Text style={{ color: '#00FFFF' }}>{order.status}</Text></Text>
-
-              <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} 
-                      onPress={() => {navigation.navigate('Tracking');}}>
-                  <Text style={[styles.buttonText, { color: 'black' }]}>
-                    Track Order
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
-                      onPress={() => {navigation.navigate('Details');}}>
-                  <Text style={[styles.buttonText, { color: 'black' }]}>
-                    View Order Details
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
-                      onPress={() => {navigation.navigate('Chats');}}>
-                  <Text style={[styles.buttonText, { color: 'black' }]}>
-                    Contact Customer
-                  </Text>
-                </TouchableOpacity>
-              </View>
+        {orders.map((order, index) => (
+          <View style={styles.orderContainer} key={index}>
+            <Text style={styles.customerName}>{order.userName}</Text>
+            <View style={styles.addressContainer}>
+              <View style={[styles.dot, { backgroundColor: 'green' }]} />
+              <Text style={styles.addressText}>
+                From: <Text style={styles.addressTextFrom}>{order.fromAddress}</Text>
+              </Text>
             </View>
-          ))}
+            <View style={styles.addressContainer}>
+              <View style={[styles.dot, { backgroundColor: 'red' }]} />
+              <Text style={styles.addressText}>
+                To: <Text style={styles.addressTextTo}>{order.toAddress}</Text>
+              </Text>
+            </View>
+            <Text style={styles.addressText}>
+              Estimated Fare: <Text style={[styles.fareAmountText, { color: 'red' }]}>{order.fareAmount}/.Rupees</Text>
+            </Text>
+            <Text style={styles.addressText}>
+              Status: <Text style={[styles.fareAmountText, { color: 'white' }]}>{order.orderStatus}</Text>
+            </Text>
+              <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} 
+                    onPress={() => {navigation.navigate('Tracking');}}>
+                <Text style={[styles.buttonText, { color: 'black' }]}>
+                  Track Order
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
+                    onPress={() => {
+                      navigation.navigate('Details', { orderId: order.id });
+                      }}>
+                <Text style={[styles.buttonText, { color: 'black' }]}>
+                  View Order Details
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
+                    onPress={() => {navigation.navigate('Chats');}}>
+                <Text style={[styles.buttonText, { color: 'black' }]}>
+                  Contact Customer
+                </Text>
+              </TouchableOpacity>
+              </View>
+          </View>
+        ))}
         </ScrollView>
       </View>
     </View>
@@ -143,6 +164,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign:'center',
     fontWeight: 'bold',
+  },
+  employeeName: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 5
   },
 });
 
