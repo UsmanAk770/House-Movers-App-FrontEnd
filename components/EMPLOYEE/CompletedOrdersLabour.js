@@ -21,19 +21,6 @@ const CompletedOrdersScreen = () => {
     },
     // Add more orders as needed
   ];
-  const makePhoneCall = () => {
-  const phoneNumber = '1234567890'; // Replace with the desired phone number
-
-  // Check if the Linking API is supported on the device
-  Linking.canOpenURL(`tel:${phoneNumber}`).then((supported) => {
-    if (supported) {
-      // Open the phone dialer with the specified phone number
-      Linking.openURL(`tel:${phoneNumber}`);
-    } else {
-      console.log('Phone call not available');
-    }
-  });
-};
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -59,11 +46,6 @@ const CompletedOrdersScreen = () => {
                     View Order Details
                   </Text>
                 </TouchableOpacity> 
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} onPress={() => {makePhoneCall}}>
-                  <Text style={[styles.buttonText, { color: 'black' }]}>
-                    Contact Customer
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
           ))}

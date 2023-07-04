@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { Text, View,Button, StyleSheet,TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import HOME from "./Home";
-import VehicleData from "./VehicleData";  
-import EmployeeData from "./EmployeeData";
-import Orders from './Orders'; 
-import TrackOrder from './TrackOrder';
-import ProfileAccount from "./ProfileAccount"; 
-import ViewOrderDetails from './ViewOrderDetails';
+import HOME from './Home';
+import RequiredOrderDetails from './RequiredOrderDetails';
+import SetPickupLocation from './SetPickUpLocation';
+import SetDestinationLocation from './SetDestinationLocation';
 import SignOut from './SignOut';
 export default function DrawerContainer(navigation) {
   const Drawer = createDrawerNavigator();
@@ -15,18 +12,6 @@ export default function DrawerContainer(navigation) {
   return (
       <Drawer.Navigator useLegacyImplementation
         screenOptions={{ drawerPosition: 'left' }} initialRouteName="HOME">
-        <Drawer.Screen name='Profile Account' component={ProfileAccount} options={{
-          title:"Profile Account",
-          gestureEnabled: true,
-          gestureDirection: 'horizontal',
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: '#BF9000',
-          },
-          headerTintColor: '#000000',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },}}/>
         <Drawer.Screen name='HOME' component={HOME} options={{
           title:"Home",
           headerTitleAlign: "center",
@@ -37,38 +22,53 @@ export default function DrawerContainer(navigation) {
           headerTitleStyle: {
             fontWeight: 'bold',
           },}}/>
-          <Drawer.Screen name='Vehicle Data' component={VehicleData} options={{
-          title:"Vehicle Data",
+          <Drawer.Screen name='Set Pickup Location' component={SetPickupLocation} options={{
+          title:"Set Pickup Location",
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: '#BF9000',
           },
+          drawerLabel: () => null,
+          drawerIcon: () => null,
+          drawerItemStyle: { display: 'none' },
+          //title: null,
+          //drawerIcon: () => null,
           headerTintColor: '#000000',
           headerTitleStyle: {
             fontWeight: 'bold',
           },}}/>
-          <Drawer.Screen name='Employee Data' component={EmployeeData} options={{
-          title:"Employee Data",
+          <Drawer.Screen name='Set Destination Location' component={SetDestinationLocation} options={{
+          title:"Set Destination Location",
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: '#BF9000',
           },
+          drawerLabel: () => null,
+          drawerIcon: () => null,
+          drawerItemStyle: { display: 'none' },
+          //title: null,
+          //drawerIcon: () => null,
           headerTintColor: '#000000',
           headerTitleStyle: {
             fontWeight: 'bold',
           },}}/>
-          <Drawer.Screen name='Orders' component={Orders} options={{
-          title:"Orders",
+          <Drawer.Screen name='Required Order Details' component={RequiredOrderDetails} options={{
+          title:"Item Details Required",
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: '#BF9000',
           },
+          drawerLabel: () => null,
+          drawerIcon: () => null,
+          drawerItemStyle: { display: 'none' },
+          //title: null,
+          //drawerIcon: () => null,
           headerTintColor: '#000000',
           headerTitleStyle: {
             fontWeight: 'bold',

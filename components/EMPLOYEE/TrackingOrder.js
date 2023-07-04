@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Button,Pressable, Platform } from 'react-native';
+import { View,TouchableOpacity, Text, StyleSheet, Button,Pressable, Platform } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton } from 'react-native-paper';
@@ -19,7 +19,7 @@ const TrackingOrder = () => {
     const vehicleData = {
       latitude: 37.7749,
       longitude: -122.4194,
-    };
+    }; 
     const timeData = '30 minutes';
 
     setVehicleLocation(vehicleData);
@@ -27,7 +27,7 @@ const TrackingOrder = () => {
   }, []);
   
   const handleGoBack = () => {
-    navigation.navigate('Pending');
+    navigation.navigate('Pending Orders');
   }; 
 
   navigation.setOptions({
@@ -69,13 +69,7 @@ const TrackingOrder = () => {
           <Text style={styles.addressText1}>From : {fromAddress}</Text>
           <Text style={styles.addressText2}>To: {toAddress}</Text>
         </View>
-        <Text style={styles.remainingTime}>Your Driver is on the Way it will take maximum {remainingTime}...</Text>
-        <Pressable style={({pressed}) => [
-              styles.button,
-              pressed && {opacity: 1.8, backgroundColor:'#987200'},
-        ]} /*onPress={() => {navigation.replace('');}}*/>
-        <Text style={styles.textbutton}> Cancel Order </Text> 
-      </Pressable>
+        <Text style={styles.remainingTime}>We are {remainingTime} minutes away...!</Text>
       
       </View>
     </View>

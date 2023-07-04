@@ -13,9 +13,8 @@ const SignInCustomer = ({navigation}) => {
       setShowErrorMessage(true);
     } else {
       setShowErrorMessage(false);
-
+      navigation.navigate('Customer Drawer');
       // Perform sign-in logic here
-
     }
   };
 

@@ -3,22 +3,22 @@ import { View, ScrollView, Text,TouchableOpacity, Image, StyleSheet } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 
-const CompletedOrdersScreen = () => {
+const PendingOrdersScreen = () => {
   const orders = [
     {
       id: '1234',
       customerName: 'John Doe',
       from: '123 Main St',
       to: '456 Elm St',
-      status: 'Completed',
+      status: 'Pending',
     },
-    {
-      id: '5678',
-      customerName: 'Jane Smith',
-      from: '789 Oak St',
-      to: '321 Pine St',
-      status: 'Completed',
-    },
+    // {
+    //   id: '5678',
+    //   customerName: 'Jane Smith',
+    //   from: '789 Oak St',
+    //   to: '321 Pine St',
+    //   status: 'Pending',
+    // },
     // Add more orders as needed
   ];
   const makePhoneCall = () => {
@@ -34,8 +34,9 @@ const CompletedOrdersScreen = () => {
     }
   });
 };
-  const navigation = useNavigation();
+const navigation = useNavigation();
   return (
+     
     <View style={styles.container}>
       <View style={styles.rectangleContainer}>
         <ScrollView contentContainerStyle={styles.ordersContainer}>
@@ -54,12 +55,20 @@ const CompletedOrdersScreen = () => {
               <Text style={[styles.orderIdText, { color: 'white' }]}>Order Status: <Text style={{ color: '#00FFFF' }}>{order.status}</Text></Text>
 
               <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} onPress={() => {navigation.navigate('Details');}}>
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} 
+                      onPress={() => {navigation.navigate('Tracking');}}>
+                  <Text style={[styles.buttonText, { color: 'black' }]}>
+                    View Location 
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
+                      onPress={() => {navigation.navigate('Details');}}>
                   <Text style={[styles.buttonText, { color: 'black' }]}>
                     View Order Details
                   </Text>
-                </TouchableOpacity> 
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]} onPress={() => {makePhoneCall}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#bf9000' }]}
+                      onPress={() => {makePhoneCall}}>
                   <Text style={[styles.buttonText, { color: 'black' }]}>
                     Contact Customer
                   </Text>
@@ -151,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompletedOrdersScreen;
+export default PendingOrdersScreen;

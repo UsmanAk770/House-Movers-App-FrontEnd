@@ -17,33 +17,33 @@ const EmployeeData = (navigation) => {
   const [roll, setroll] = useState('');
   const [employeeList, setEmployeeList] = useState([]);
 
-  fetch('http://127.0.0.1:3000/viewteam', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      const driverList = data.Driver.map((driver) => ({
-        id: driver._id,
-        roll: driver.D_roll,
-        name: driver.D_name,
-        phone: driver.D_phone,
-        cnic: driver.D_cnic,
-      }));
+  // fetch('http://127.0.0.1:3000/viewteam', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     const driverList = data.Driver.map((driver) => ({
+  //       id: driver._id,
+  //       roll: driver.D_roll,
+  //       name: driver.D_name,
+  //       phone: driver.D_phone,
+  //       cnic: driver.D_cnic,
+  //     }));
 
-      const labourList = data.labour.map((labour) => ({
-        id: labour._id,
-        roll: labour.L_roll,
-        name: labour.L_name,
-        phone: labour.L_phone,
-        cnic: labour.L_cnic,
-      }));
+  //     const labourList = data.labour.map((labour) => ({
+  //       id: labour._id,
+  //       roll: labour.L_roll,
+  //       name: labour.L_name,
+  //       phone: labour.L_phone,
+  //       cnic: labour.L_cnic,
+  //     }));
 
-      const newTeaList = [...driverList, ...labourList];
-      setEmployeeList(newTeaList);
-    });
+  //     const newTeaList = [...driverList, ...labourList];
+  //     setEmployeeList(newTeaList);
+  //   });
 
   const handleNameChange = (value) => {
     setName(value);
@@ -61,236 +61,257 @@ const EmployeeData = (navigation) => {
   };
 
   
-    
   const handleAddEmployee = () => {
-  if(name === '' || phone === '' || (phone.length < 11) || (phone.length > 13) ||cnic === '' || ((cnic.length < 13) || (cnic.length > 13) || roll === '')) {
-      console.log(name, phone, cnic, roll);
-      alert('Please Fill All the Fields Correctly');
-    } else {
-      if (roll === 'driver' || roll === 'Driver') {
-          const fdata = {
-            roll: roll,
-            Driver_name: name,
-            Driver_phone: phone,
-            Driver_cnic: cnic,
-          };
-          console.log(fdata);
-          fetch('http://127.0.0.1:3000/addteam', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(fdata),
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data.error) {
-                console.log(data.error);
-              } else {
-                console.log(data);
-                fetch('http://127.0.0.1:3000/viewteam', {
-                  method: 'GET',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                })
-                  .then(response => response.json())
-                  .then(data => {
-                    const driverList = data.Driver.map(driver => ({
-                      id: driver._id,
-                      roll: driver.D_roll,
-                      name: driver.D_name,
-                      phone: driver.D_phone,
-                      cnic: driver.D_cnic,
-                    }));
+  // if(name === '' || phone === '' || (phone.length < 11) || (phone.length > 13) ||cnic === '' || ((cnic.length < 13) || (cnic.length > 13) || roll === '')) {
+  //     console.log(name, phone, cnic, roll);
+  //     alert('Please Fill All the Fields Correctly');
+  //   } else {
+  //     if (roll === 'driver' || roll === 'Driver') {
+  //         const fdata = {
+  //           roll: roll,
+  //           Driver_name: name,
+  //           Driver_phone: phone,
+  //           Driver_cnic: cnic,
+  //         };
+  //         console.log(fdata);
+  //         fetch('http://127.0.0.1:3000/addteam', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(fdata),
+  //         })
+  //           .then(response => response.json())
+  //           .then(data => {
+  //             if (data.error) {
+  //               console.log(data.error);
+  //             } else {
+  //               console.log(data);
+  //               fetch('http://127.0.0.1:3000/viewteam', {
+  //                 method: 'GET',
+  //                 headers: {
+  //                   'Content-Type': 'application/json',
+  //                 },
+  //               })
+  //                 .then(response => response.json())
+  //                 .then(data => {
+  //                   const driverList = data.Driver.map(driver => ({
+  //                     id: driver._id,
+  //                     roll: driver.D_roll,
+  //                     name: driver.D_name,
+  //                     phone: driver.D_phone,
+  //                     cnic: driver.D_cnic,
+  //                   }));
     
-                    const labourList = data.labour.map(labour => ({
-                      id: labour._id,
-                      roll: labour.L_roll,
-                      name: labour.L_name,
-                      phone: labour.L_phone,
-                      cnic: labour.L_cnic,
-                    }));
+  //                   const labourList = data.labour.map(labour => ({
+  //                     id: labour._id,
+  //                     roll: labour.L_roll,
+  //                     name: labour.L_name,
+  //                     phone: labour.L_phone,
+  //                     cnic: labour.L_cnic,
+  //                   }));
     
-                    const newTeaList = [...driverList, ...labourList];
-                    setEmployeeList(newTeaList);
-                  })
-                  .catch(error => {
-                    console.error('Error:', error);
-                  });
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        } else if (roll === 'labour' || roll === 'Labour') {
-          const fdata = {
-            roll: roll,
-            labour_name: name,
-            labour_phone: phone,
-            labour_cnic: cnic,
-          };
-          console.log(fdata);
-          fetch('http://127.0.0.1:3000/addteam', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(fdata),
-          })
-            .then(response => response.json())
-            .then(data => {
-              if (data.error) {
-                console.log(data.error);
-              } else {
-                console.log(data);
-                fetch('http://127.0.0.1:3000/viewteam', {
-                  method: 'GET',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                })
-                  .then(response => response.json())
-                  .then(data => {
-                    const driverList = data.Driver.map(driver => ({
-                      id: driver._id,
-                      roll: driver.D_roll,
-                      name: driver.D_name,
-                      phone: driver.D_phone,
-                      cnic: driver.D_cnic,
-                    }));
+  //                   const newTeaList = [...driverList, ...labourList];
+  //                   setEmployeeList(newTeaList);
+  //                 })
+  //                 .catch(error => {
+  //                   console.error('Error:', error);
+  //                 });
+  //             }
+  //           })
+  //           .catch(error => {
+  //             console.error('Error:', error);
+  //           });
+  //       } else if (roll === 'labour' || roll === 'Labour') {
+  //         const fdata = {
+  //           roll: roll,
+  //           labour_name: name,
+  //           labour_phone: phone,
+  //           labour_cnic: cnic,
+  //         };
+  //         console.log(fdata);
+  //         fetch('http://127.0.0.1:3000/addteam', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(fdata),
+  //         })
+  //           .then(response => response.json())
+  //           .then(data => {
+  //             if (data.error) {
+  //               console.log(data.error);
+  //             } else {
+  //               console.log(data);
+  //               fetch('http://127.0.0.1:3000/viewteam', {
+  //                 method: 'GET',
+  //                 headers: {
+  //                   'Content-Type': 'application/json',
+  //                 },
+  //               })
+  //                 .then(response => response.json())
+  //                 .then(data => {
+  //                   const driverList = data.Driver.map(driver => ({
+  //                     id: driver._id,
+  //                     roll: driver.D_roll,
+  //                     name: driver.D_name,
+  //                     phone: driver.D_phone,
+  //                     cnic: driver.D_cnic,
+  //                   }));
     
-                    const labourList = data.labour.map(labour => ({
-                      id: labour._id,
-                      roll: labour.L_roll,
-                      name: labour.L_name,
-                      phone: labour.L_phone,
-                      cnic: labour.L_cnic,
-                    }));
+  //                   const labourList = data.labour.map(labour => ({
+  //                     id: labour._id,
+  //                     roll: labour.L_roll,
+  //                     name: labour.L_name,
+  //                     phone: labour.L_phone,
+  //                     cnic: labour.L_cnic,
+  //                   }));
     
-                    const newTeaList = [...driverList, ...labourList];
-                    setEmployeeList(newTeaList);
-                  })
-                  .catch(error => {
-                    console.error('Error:', error);
-                  });
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        }
-      setName('');
-      setPhone('');
-      setCnic('');
-      setroll('');
-      alert('Employee Details Added Successfully');
-    }
+  //                   const newTeaList = [...driverList, ...labourList];
+  //                   setEmployeeList(newTeaList);
+  //                 })
+  //                 .catch(error => {
+  //                   console.error('Error:', error);
+  //                 });
+  //             }
+  //           })
+  //           .catch(error => {
+  //             console.error('Error:', error);
+  //           });
+  //       }
+  //     setName('');
+  //     setPhone('');
+  //     setCnic('');
+  //     setroll('');
+  //     alert('Employee Details Added Successfully');
+  //   }
   };
-
+  // const handleAddEmployee = () => {
+  //   if(image === ''|| name === '' || phone === '' || (phone.length < 11) || (phone.length > 13) ||cnic === '' || ((cnic.length < 13) || (cnic.length > 13))) {
+  //       alert('Please Fill All the Fields Correctly');
+  //     } else {
+  //       const newEmployee = {
+  //         id: employeeList.length + 1,
+  //         name: name,
+  //         phone: phone,
+  //         cnic: cnic,
+  //         image: imageUri
+  //       };
+  //       setEmployeeList([...employeeList, newEmployee]);
+  //       setName('');
+  //       setPhone('');
+  //       setCnic('');
+  //       setImage(null);
+  //       //setImageUri('');
+  //       alert('Employee Details Added Successfully');
+  //     }
+  //   };
 
   const handleDeleteEmployee = (employee) => {
-    if(employee.roll == 'driver' || employee.roll == 'Driver') {
-      const sdata =
-      {
-        roll: employee.roll,
-        Driver_cnic: employee.cnic
-      }
-      fetch(`http://127.0.0.1:3000/deleteteam`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body : JSON.stringify(sdata)
-      })
-      .then(response => response.json())
-      .then(() => {
-          fetch('http://127.0.0.1:3000/viewteam', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then(response => response.json())
-            .then(data => {
-              const driverList = data.Driver.map(driver => ({
-                id: driver._id,
-                roll: driver.D_roll,
-                name: driver.D_name,
-                phone: driver.D_phone,
-                cnic: driver.D_cnic,
-              }));
+    // if(employee.roll == 'driver' || employee.roll == 'Driver') {
+    //   const sdata =
+    //   {
+    //     roll: employee.roll,
+    //     Driver_cnic: employee.cnic
+    //   }
+    //   fetch(`http://127.0.0.1:3000/deleteteam`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body : JSON.stringify(sdata)
+    //   })
+    //   .then(response => response.json())
+    //   .then(() => {
+    //       fetch('http://127.0.0.1:3000/viewteam', {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //           const driverList = data.Driver.map(driver => ({
+    //             id: driver._id,
+    //             roll: driver.D_roll,
+    //             name: driver.D_name,
+    //             phone: driver.D_phone,
+    //             cnic: driver.D_cnic,
+    //           }));
   
-              const labourList = data.labour.map(labour => ({
-                id: labour._id,
-                roll: labour.L_roll,
-                name: labour.L_name,
-                phone: labour.L_phone,
-                cnic: labour.L_cnic,
-              }));
+    //           const labourList = data.labour.map(labour => ({
+    //             id: labour._id,
+    //             roll: labour.L_roll,
+    //             name: labour.L_name,
+    //             phone: labour.L_phone,
+    //             cnic: labour.L_cnic,
+    //           }));
   
-              const newTeaList = [...driverList, ...labourList];
-              setEmployeeList(newTeaList);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        })
-        .catch(error => {
-          console.error('Error deleting vehicle:', error);
-        });
-    }else if(employee.roll == 'labour' || employee.roll == 'Labour') {
-      const sdata =
-      {
-        roll: employee.roll,
-        labour_cnic: employee.cnic
-      }
-      fetch(`http://127.0.0.1:3000/deleteteam`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body : JSON.stringify(sdata)
-      })
-        .then(() => {
-          fetch('http://127.0.0.1:3000/viewteam', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then(response => response.json())
-            .then(data => {
-              const driverList = data.Driver.map(driver => ({
-                id: driver._id,
-                roll: driver.D_roll,
-                name: driver.D_name,
-                phone: driver.D_phone,
-                cnic: driver.D_cnic,
-              }));
+    //           const newTeaList = [...driverList, ...labourList];
+    //           setEmployeeList(newTeaList);
+    //         })
+    //         .catch(error => {
+    //           console.error('Error:', error);
+    //         });
+    //     })
+    //     .catch(error => {
+    //       console.error('Error deleting vehicle:', error);
+    //     });
+    // }else if(employee.roll == 'labour' || employee.roll == 'Labour') {
+    //   const sdata =
+    //   {
+    //     roll: employee.roll,
+    //     labour_cnic: employee.cnic
+    //   }
+    //   fetch(`http://127.0.0.1:3000/deleteteam`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body : JSON.stringify(sdata)
+    //   })
+    //     .then(() => {
+    //       fetch('http://127.0.0.1:3000/viewteam', {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //           const driverList = data.Driver.map(driver => ({
+    //             id: driver._id,
+    //             roll: driver.D_roll,
+    //             name: driver.D_name,
+    //             phone: driver.D_phone,
+    //             cnic: driver.D_cnic,
+    //           }));
   
-              const labourList = data.labour.map(labour => ({
-                id: labour._id,
-                roll: labour.L_roll,
-                name: labour.L_name,
-                phone: labour.L_phone,
-                cnic: labour.L_cnic,
-              }));
+    //           const labourList = data.labour.map(labour => ({
+    //             id: labour._id,
+    //             roll: labour.L_roll,
+    //             name: labour.L_name,
+    //             phone: labour.L_phone,
+    //             cnic: labour.L_cnic,
+    //           }));
   
-              const newTeaList = [...driverList, ...labourList];
-              setEmployeeList(newTeaList);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-        })
-        .catch(error => {
-          console.error('Error deleting vehicle:', error);
-        });
+    //           const newTeaList = [...driverList, ...labourList];
+    //           setEmployeeList(newTeaList);
+    //         })
+    //         .catch(error => {
+    //           console.error('Error:', error);
+    //         });
+    //     })
+    //     .catch(error => {
+    //       console.error('Error deleting vehicle:', error);
+    //     });
 
-    }  
-    console.log(employee);
+    // }  
+    // console.log(employee);
   };
+  // const handleDeleteEmployee = (id) => {
+  //   setEmployeeList(employeeList.filter(emp => emp.id !== id));
+  // };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView style={styles.scrollContainer}>
@@ -322,7 +343,7 @@ const EmployeeData = (navigation) => {
           />
           <TextInput
             style={styles.input}
-            placeholder="roll employee or driver"
+            placeholder="Roll of Employee i.e: (Driver or Labour)"
             placeholderTextColor="black"
             keyboardType="default"
             value={roll}

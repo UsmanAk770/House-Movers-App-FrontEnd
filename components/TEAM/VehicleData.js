@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, ScrollView, KeyboardAvoidingView,TouchableOpacity, StyleSheet } from 'react-native';
 
-
-
-
-
 const VehicleData = () => {
   const [vehicleName, setVehicleName] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
@@ -13,132 +9,141 @@ const VehicleData = () => {
   const [loadingCapacity, setLoadingCapacity] = useState('');
   const [vehicleCategory, setVehicleCategory] = useState('');
   const [vehicleList, setVehicleList] = useState([]);
-  fetch('http://127.0.0.1:3000/viewvehical', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    const jsonArray = Array.from(Object.values(data));
-    const newVehicleList = jsonArray.map((item) => ({
-      id: item.id,
-      vehicleName: item.V_name,
-      vehicleModel: item.V_model,
-      vehicleManufacturer: item.V_manufacturer,
-      vehicleRegisterNumber: item.V_number,
-      loadingCapacity: item.V_capacity,
-      vehicleCategory: item.V_category,
-    }));
-    setVehicleList(newVehicleList);
-  });
+  // fetch('http://127.0.0.1:3000/viewvehical', {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  // .then((response) => response.json())
+  // .then((data) => {
+  //   const jsonArray = Array.from(Object.values(data));
+  //   const newVehicleList = jsonArray.map((item) => ({
+  //     id: item.id,
+  //     vehicleName: item.V_name,
+  //     vehicleModel: item.V_model,
+  //     vehicleManufacturer: item.V_manufacturer,
+  //     vehicleRegisterNumber: item.V_number,
+  //     loadingCapacity: item.V_capacity,
+  //     vehicleCategory: item.V_category,
+  //   }));
+  //   setVehicleList(newVehicleList);
+  // });
+
+  // const addVehicle = () => {
+  //   if ( vehicleName === '' ||
+  //     vehicleModel === '' ||
+  //     vehicleManufacturer === '' ||
+  //     vehicleRegisterNumber === '' ||
+  //     loadingCapacity === ''
+  //   ) {
+  //     alert('Please enter data in all fields.');
+  //     return;
+  //   }
+  // }
 
 
-
-  
   const addVehicle = () => {
+    // if (
+    //   vehicleName === '' ||
+    //   vehicleModel === '' ||
+    //   vehicleManufacturer === '' ||
+    //   vehicleRegisterNumber === '' ||
+    //   loadingCapacity === '' ||
+    //   vehicleCategory === '' 
 
-    if (
-      vehicleName === '' ||
-      vehicleModel === '' ||
-      vehicleManufacturer === '' ||
-      vehicleRegisterNumber === '' ||
-      loadingCapacity === '' ||
-      vehicleCategory === '' 
+    // ) {
+    //   alert('Please enter data in all fields.');
+    //   return;
+    // }
+    // else{
+    //   const fdata = {
+    //     V_name: vehicleName ,
+    //     V_model: vehicleModel ,
+    //     V_manufacturer: vehicleManufacturer ,
+    //     V_number: vehicleRegisterNumber ,
+    //     V_capacity: loadingCapacity ,
+    //     V_category: vehicleCategory
+    //   }
 
-    ) {
-      alert('Please enter data in all fields.');
-      return;
-    }
-    else{
-      const fdata = {
-        V_name: vehicleName ,
-        V_model: vehicleModel ,
-        V_manufacturer: vehicleManufacturer ,
-        V_number: vehicleRegisterNumber ,
-        V_capacity: loadingCapacity ,
-        V_category: vehicleCategory
-      }
-
-      fetch('http://127.0.0.1:3000/addvehical',{
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-        },
-        body : JSON.stringify(fdata)
-      })
-      .then(response => response.json()).then(
-        data=> {
-          if(data.error) {
-            console.log(data.error);
-          }
-          console.log(data);
-          fetch('http://127.0.0.1:3000/viewvehical', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((response) => response.json())
-          .then((data) => {
-            const jsonArray = Array.from(Object.values(data));
-            const newVehicleList = jsonArray.map((item) => ({
-              id: item.id,
-              vehicleName: item.V_name,
-              vehicleModel: item.V_model,
-              vehicleManufacturer: item.V_manufacturer,
-              vehicleRegisterNumber: item.V_number,
-              loadingCapacity: item.V_capacity,
-              vehicleCategory: item.V_category,
-            }));
-            setVehicleList(newVehicleList);
-          });
-        }
-      )
+    //   fetch('http://127.0.0.1:3000/addvehical',{
+    //     method: 'POST',
+    //     headers: { 
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body : JSON.stringify(fdata)
+    //   })
+    //   .then(response => response.json()).then(
+    //     data=> {
+    //       if(data.error) {
+    //         console.log(data.error);
+    //       }
+    //       console.log(data);
+    //       fetch('http://127.0.0.1:3000/viewvehical', {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       })
+    //       .then((response) => response.json())
+    //       .then((data) => {
+    //         const jsonArray = Array.from(Object.values(data));
+    //         const newVehicleList = jsonArray.map((item) => ({
+    //           id: item.id,
+    //           vehicleName: item.V_name,
+    //           vehicleModel: item.V_model,
+    //           vehicleManufacturer: item.V_manufacturer,
+    //           vehicleRegisterNumber: item.V_number,
+    //           loadingCapacity: item.V_capacity,
+    //           vehicleCategory: item.V_category,
+    //         }));
+    //         setVehicleList(newVehicleList);
+    //       });
+    //     }
+    //   )
       
-    }
+    // }
   };
 
   const deleteVehicle = (id) => {
-      const fdata = {
-        V_number : id,
-      }
+      // const fdata = {
+      //   V_number : id,
+      // }
   
-      fetch(`http://127.0.0.1:3000/deletevehical`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body : JSON.stringify(fdata)
-      })
-        .then(() => {
+      // fetch(`http://127.0.0.1:3000/deletevehical`, {
+      //   method: 'DELETE',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body : JSON.stringify(fdata)
+      // })
+      //   .then(() => {
 
-          fetch('http://127.0.0.1:3000/viewvehical', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              const jsonArray = Array.from(Object.values(data));
-              const newVehicleList = jsonArray.map((item) => ({
-                id: item.id,
-                vehicleName: item.V_name,
-                vehicleModel: item.V_model,
-                vehicleManufacturer: item.V_manufacturer,
-                vehicleRegisterNumber: item.V_number,
-                loadingCapacity: item.V_capacity,
-                vehicleCategory: item.V_category,
-              }));
-              setVehicleList(newVehicleList);
-            });
+      //     fetch('http://127.0.0.1:3000/viewvehical', {
+      //       method: 'GET',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         const jsonArray = Array.from(Object.values(data));
+      //         const newVehicleList = jsonArray.map((item) => ({
+      //           id: item.id,
+      //           vehicleName: item.V_name,
+      //           vehicleModel: item.V_model,
+      //           vehicleManufacturer: item.V_manufacturer,
+      //           vehicleRegisterNumber: item.V_number,
+      //           loadingCapacity: item.V_capacity,
+      //           vehicleCategory: item.V_category,
+      //         }));
+      //         setVehicleList(newVehicleList);
+      //       });
 
-        })
-        .catch(error => {
-          console.error('Error deleting vehicle:', error);
-        });
+      //   })
+      //   .catch(error => {
+      //     console.error('Error deleting vehicle:', error);
+      //   });
 
   };
   

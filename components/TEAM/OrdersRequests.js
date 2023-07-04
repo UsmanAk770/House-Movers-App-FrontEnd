@@ -1,133 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Linking } from 'react-native';
 
 const OrdersRequestComponent = () => {
-  const [orders, setOrders] = useState([]);
-  const navigation = useNavigation();
+  const orders = [
+    {
+      customerName: 'John Doe',
+      fromAddress: '123 Main St',
+      toAddress: '456 Elm St',
+      fareAmount: 5000,
+    },
+    {
+      customerName: 'Jane Smith',
+      fromAddress: '789 Oak Ave',
+      toAddress: '987 Pine St',
+      fareAmount: 3500,
+    },
+    // Add more orders as needed
+  ];
+const navigation = useNavigation();
 
-  useEffect(() => {
-    fetch('http://127.0.0.1:3000/viewrequestedorders', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        const orderslist = data.map((order) => ({
-          id: order._id,
-          userName: order.orderDetails.userDetails && order.orderDetails.userDetails.name ? order.orderDetails.userDetails.name : 'N/A',
-          fromAddress: order.orderDetails.fromLocations,
-          toAddress: order.orderDetails.toLocations,
-          fareAmount: order.orderDetails.setfair,
-          orderStatus: order.status,
-        }));
-
-        setOrders(orderslist);
-      })
-      .catch((error) => {
-        console.error('Error fetching orders:', error);
-      });
-  }, []);
-
-  const handleAcceptOrder = (order) => {
-    const fdata = {
-      id: order.id,
-      statusChange: 'addEmployee',
-    };
-  
-    fetch('http://127.0.0.1:3000/changeorderstatus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(fdata),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          // Update the state with the updated list of orders
-          fetch('http://127.0.0.1:3000/viewrequestedorders', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              const orderslist = data.map((order) => ({
-                id: order._id,
-                userName: order.orderDetails.userDetails && order.orderDetails.userDetails.name ? order.orderDetails.userDetails.name : 'N/A',
-                fromAddress: order.orderDetails.fromLocations,
-                toAddress: order.orderDetails.toLocations,
-                fareAmount: order.orderDetails.setfair,
-                orderStatus: order.status,
-              }));
-  
-              setOrders(orderslist);
-            })
-            .catch((error) => {
-              console.error('Error fetching orders:', error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error('Error canceling order:', error);
-      });
-  };
-
-  const handleCancelOrder = (order) => {
-    const fdata = {
-      id: order.id,
-      statusChange: 'Cancelled',
-    };
-  
-    fetch('http://127.0.0.1:3000/changeorderstatus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(fdata),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          // Update the state with the updated list of orders
-          fetch('http://127.0.0.1:3000/viewrequestedorders', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              const orderslist = data.map((order) => ({
-                id: order._id,
-                userName: order.orderDetails.userDetails && order.orderDetails.userDetails.name ? order.orderDetails.userDetails.name : 'N/A',
-                fromAddress: order.orderDetails.fromLocations,
-                toAddress: order.orderDetails.toLocations,
-                fareAmount: order.orderDetails.setfair,
-                orderStatus: order.status,
-              }));
-  
-              setOrders(orderslist);
-            })
-            .catch((error) => {
-              console.error('Error fetching orders:', error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error('Error canceling order:', error);
-      });
-  };
-  
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -159,7 +52,7 @@ const OrdersRequestComponent = () => {
               <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Details')}>
                 <Text style={styles.buttonText}>View Order Details</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chats')}>
+              <TouchableOpacity style={styles.button} onPress={() => {makePhoneCall}}>
                 <Text style={styles.buttonText}>Contact Customer</Text>
               </TouchableOpacity>
             </View>

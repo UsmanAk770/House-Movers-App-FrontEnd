@@ -11,9 +11,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 const ProfileAccount = (navigation) => {
-  const [ownerName, setOwnerName] = useState('John Doe');
-  const [teamName, setTeamName] = useState('Team A');
-  const [email, setEmail] = useState('johndoe@example.com');
+  const [Name, setName] = useState('John Doe');
+  const [EmployeeId, setEmployeeId] = useState('HM67L9');
   const [phoneNumber, setPhoneNumber] = useState('12345678900');
   const [cnic, setCnic] = useState('1234567891234');
   const [password, setPassword] = useState('password12345');
@@ -22,24 +21,19 @@ const ProfileAccount = (navigation) => {
   const [isChangesSaved, setIsChangesSaved] = useState(false);
   const handleSaveChanges = () => {
     // Perform necessary operations to save changes
-    if (!ownerName || !teamName || !email || !phoneNumber || !cnic || !password) {
+    if (!Name || !phoneNumber || !cnic || !password) {
       alert('All fields are required.');
       return;
     }
-    else if (!/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
+    else if((cnic.length < 13) || (cnic.length > 13)){
+      alert('Please enter a valid 13 digit cnic number without dashes (-)');
       return;
     }
     else if(cnic.length!==13)
     {
-      alert('Please enter a valid 13 digit cnic number without dashes(-)');
+      alert('Please enter a valid 13 digit cnic number without dashes (-)');
       return;
     }
-    // else if(cnic.length>13)
-    // {
-    //   alert('Please enter a valid 13 digit cnic number without dashes(-)');
-    //   return;
-    // }
     else if(phoneNumber.length<11){
       alert('Please enter a valid 11 digits mobile number');
       return;
@@ -67,42 +61,20 @@ const ProfileAccount = (navigation) => {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Owner Name:</Text>
-          {isEditMode ? (
-            <TextInput
-              style={styles.input}
-              value={ownerName}
-              keyboardType="default"
-              onChangeText={text => setOwnerName(text)}
-            />
-          ) : (
-            <Text style={styles.value}>{ownerName}</Text>
-          )}
+          <Text style={styles.label}>Employee ID:</Text>
+          <Text style={styles.value}>{EmployeeId}</Text>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Team Name:</Text>
+          <Text style={styles.label}>Name:</Text>
           {isEditMode ? (
             <TextInput
               style={styles.input}
-              value={teamName}
+              value={Name}
               keyboardType="default"
-              onChangeText={text => setTeamName(text)}
+              onChangeText={text => setName(text)}
             />
           ) : (
-            <Text style={styles.value}>{teamName}</Text>
-          )}
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email:</Text>
-          {isEditMode ? (
-            <TextInput
-              style={styles.input}
-              value={email}
-              keyboardType="email-address"
-              onChangeText={text => setEmail(text)}
-            />
-          ) : (
-            <Text style={styles.value}>{email}</Text>
+            <Text style={styles.value}>{Name}</Text>
           )}
         </View>
         <View style={styles.inputContainer}>
@@ -191,9 +163,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   value: {
-    marginTop: 5,
+    marginTop:5,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight:'bold',
     color: 'white',
     secureTextEntry: "text",
   },
@@ -209,7 +181,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 5,
+    padding: 5, 
   },
   input: {
     flex:1,

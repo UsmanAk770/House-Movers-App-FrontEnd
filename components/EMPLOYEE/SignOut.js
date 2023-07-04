@@ -7,7 +7,7 @@ const SignOut = ({navigate}) => {
   const handleSignOut = () => {
     // Perform sign out functionality here
     // Example: navigate to the sign-in screen or clear user session
-    navigation.navigate('Team Sign In');
+    navigation.navigate('Employee Sign In');
   };
   return (
     <View style={styles.container}>
