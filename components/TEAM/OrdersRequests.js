@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, ScrollView, Text,TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 
@@ -20,44 +20,36 @@ const OrdersRequestComponent = () => {
     // Add more orders as needed
   ];
 const navigation = useNavigation();
-const makePhoneCall = () => {
-  const phoneNumber = '1234567890'; // Replace with the desired phone number
 
-  // Check if the Linking API is supported on the device
-  Linking.canOpenURL(`tel:${phoneNumber}`).then((supported) => {
-    if (supported) {
-      // Open the phone dialer with the specified phone number
-      Linking.openURL(`tel:${phoneNumber}`);
-    } else {
-      console.log('Phone call not available');
-    }
-  });
-};
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         {orders.map((order, index) => (
           <View style={styles.orderContainer} key={index}>
-            <Text style={styles.customerName}>{order.customerName}</Text>
+            <Text style={styles.customerName}>{order.userName}</Text>
             <View style={styles.addressContainer}>
               <View style={[styles.dot, { backgroundColor: 'green' }]} />
-              <Text style={styles.addressText}>From :<Text style={styles.addressTextFrom}> {order.fromAddress}</Text></Text>
+              <Text style={styles.addressText}>
+                From: <Text style={styles.addressTextFrom}>{order.fromAddress}</Text>
+              </Text>
             </View>
             <View style={styles.addressContainer}>
               <View style={[styles.dot, { backgroundColor: 'red' }]} />
-              <Text style={styles.addressText}>To: <Text style={styles.addressTextTo}> {order.toAddress}</Text></Text>
+              <Text style={styles.addressText}>
+                To: <Text style={styles.addressTextTo}>{order.toAddress}</Text>
+              </Text>
             </View>
-            <Text  style={styles.addressText}>Estimated Fare: <Text style={[styles.fareAmountText, { color: 'red' }]}>
-              {order.fareAmount}/.Rupees
-            </Text></Text>
+            <Text style={styles.addressText}>
+              Estimated Fare: <Text style={[styles.fareAmountText, { color: 'red' }]}>{order.fareAmount}/.Rupees</Text>
+            </Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={() => handleAcceptOrder(order)}>
                 <Text style={styles.buttonText}>Accept Order</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={() => handleCancelOrder(order)}>
                 <Text style={styles.buttonText}>Cancel Order</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}  onPress={() => {navigation.navigate('Details');}}>
+              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Details')}>
                 <Text style={styles.buttonText}>View Order Details</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={() => {makePhoneCall}}>
@@ -69,6 +61,16 @@ const makePhoneCall = () => {
       </ScrollView>
     </View>
   );
+};
+
+OrdersRequestComponent.navigationOptions = {
+  screenOptions: {
+    tabBarActiveTintColor: '#bf9000',
+    tabBarInactiveTintColor: 'grey',
+    tabBarStyle: {
+      display: 'flex',
+    },
+  },
 };
 
 const styles = StyleSheet.create({
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: 'bold',
     marginBottom: 10,
-    color:'yellow',
+    color: 'yellow',
   },
   addressContainer: {
     flexDirection: 'row',
@@ -105,17 +107,17 @@ const styles = StyleSheet.create({
   addressText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color:'white',
+    color: 'white',
   },
-  addressTextFrom:{
+  addressTextFrom: {
     fontSize: 16,
     fontWeight: 'bold',
-    color:'green',
+    color: 'green',
   },
-  addressTextTo:{
+  addressTextTo: {
     fontSize: 16,
     fontWeight: 'bold',
-    color:'red',
+    color: 'red',
   },
   fareAmountText: {
     fontSize: 16,

@@ -9,49 +9,39 @@ const SignInTeam = ({navigation}) => {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [error, setError] = useState('');
 
+ 
+
   const handleSignIn = () => {
     if (email === '' || password === '') {
-      setShowErrorMessage(true);
-    } else {
-      setShowErrorMessage(false);
+      setError('Empty Feilds');
+    } 
+    else {
+      const fdata = {
+        Leader_Email: email,
+        Password: password
+      }
+      fetch('http://127.0.0.1:3000/loginteam',{
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body : JSON.stringify(fdata)
+      })
+      .then(response => response.json()).then(
+        data=> {
+          if(data.error) {
+            console.log(data.error);
+          }
+          else if (data.login === true) {
+            // console.log('')
+            navigation.replace('Team Drawer');
 
-      navigation.replace('Team Drawer');
-      // Perform sign-in logic here
-
+          }
+          console.log(data);
+        }
+      )
     }
   };
-
-  // const handleSignIn = () => {
-  //   if (email === '' || password === '') {
-  //     setError('Empty Feilds');
-  //   } 
-  //   else {
-  //     const fdata = {
-  //       Leader_Email: email,
-  //       Password: password
-  //     }
-  //     fetch('http://127.0.0.1:3000/loginteam',{
-  //       method: 'POST',
-  //       headers: { 
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body : JSON.stringify(fdata)
-  //     })
-  //     .then(response => response.json()).then(
-  //       data=> {
-  //         if(data.error) {
-  //           console.log(data.error);
-  //         }
-  //         else if (data.login === true) {
-  //           // console.log('')
-  //           navigation.replace('Team Drawer');
-
-  //         }
-  //         console.log(data);
-  //       }
-  //     )
-  //   }
-  // };
 
   const validateEmail = (text) => {
     // Email validation regex
